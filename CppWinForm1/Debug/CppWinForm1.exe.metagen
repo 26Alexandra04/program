@@ -20,6 +20,3 @@ Class CppWinForm1.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   Fields:
     System.String str : Public
     Int32 N : Public
-    SByte* s : Public
-  Methods:
-    and_SysStringToChar(String): PrivateScope, Public, HideBySig

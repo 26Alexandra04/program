@@ -10,6 +10,7 @@ namespace CppWinForm1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Runtime::InteropServices;
+	using namespace std;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -51,6 +52,38 @@ namespace CppWinForm1 {
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
+
+		string Cezar()
+		{
+			string s = msclr::interop::marshal_as<std::string>(textBox1->Text); //перевод введенной строки из типа String^ (system) в тип string (std)
+			char ch[100];
+			int i, n;
+
+			n = s.length(); //длина введенной строки
+
+			for (i = 0; i < n; i++)
+			{
+				if (s[i] >= 'a' && s[i] <= 'z')
+				{
+					s[i] = s[i] - (N % 26);
+					if (s[i] < 'a')
+					{
+						s[i] = 'z' - ('a' - s[i]) + 1;
+					}
+				}
+				if (s[i] >= 'A' && s[i] <= 'Z')
+				{
+					s[i] = s[i] - (N % 26);
+					if (s[i] < 'A')
+					{
+						s[i] = 'Z' - ('A' - s[i]) + 1;
+					}
+				}
+			}
+
+			return s;
+		}
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -125,6 +158,7 @@ namespace CppWinForm1 {
 			this->PerformLayout();
 
 		}
+
 #pragma endregion
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		str = (textBox1->Text);
@@ -133,7 +167,9 @@ namespace CppWinForm1 {
 		N = Convert::ToInt32(textBox2->Text);
 	}
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		textBox3->Text = Convert::ToString(Convert::ToString(str) + " " + Convert::ToString(N));
+		string st;
+		st = Cezar();
+		textBox3->Text = gcnew System::String(st.c_str());
 	}
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 		textBox3->Text = Convert::ToString(Convert::ToString(str) + " " + Convert::ToString(N));
