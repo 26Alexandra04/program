@@ -18,5 +18,19 @@ Class CppWinForm1.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
+    System.Windows.Forms.TextBox textBox1 : Public
+    System.Windows.Forms.TextBox textBox2 : Public
+    System.Windows.Forms.TextBox textBox3 : Public
     System.String str : Public
+    System.Windows.Forms.Label label1 : Public
+    System.Windows.Forms.Label label2 : Public
+    System.Windows.Forms.Label label3 : Public
     Int32 N : Public
+    Int32 N1 : Public
+    System.ComponentModel.Container components : Public
+  Methods:
+    Cezar(basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
+    InitializeComponent(): PrivateScope, Public, HideBySig
+    textBox1_TextChanged(Object, EventArgs): PrivateScope, Public, HideBySig
+    textBox2_TextChanged(Object, EventArgs): PrivateScope, Public, HideBySig
+    button2_Click(Object, EventArgs): PrivateScope, Public, HideBySig
