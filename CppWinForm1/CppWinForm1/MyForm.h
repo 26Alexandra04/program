@@ -63,18 +63,26 @@ namespace CppWinForm1 {
 
 	public: string Cezar()
 		{
-			string s = msclr::interop::marshal_as<std::string>(textBox1->Text); //перевод введенной строки из типа String^ (system) в тип string (std)
+			string s = msclr::interop::marshal_as<std::string>(textBox1->Text); //РїРµСЂРµРІРѕРґ РІРІРµРґРµРЅРЅРѕР№ СЃС‚СЂРѕРєРё РёР· С‚РёРїР° String^ (system) РІ С‚РёРї string (std)
 			char ch[100];
 			int i, n, N2;
+					
 			
-			//N2 = N1 % 26; //сдвиг
-
-			n = s.length(); //длина введенной строки
-			
-			for (i = 0; i < n; i++)
+			if (N1 >= 0)
 			{
-				
-				if (N1 >= 0)
+				s = CezarLeft(s, N1);
+			}
+			else {
+				s= CezarRight(s, N1);
+			}
+
+			return s;
+		}
+
+			public: string CezarLeft(string s, int N1)
+			{
+				int n = s.length();
+				for (int i = 0; i < n; i++)
 				{
 					if (s[i] >= 'a' && s[i] <= 'z')
 					{
@@ -93,15 +101,31 @@ namespace CppWinForm1 {
 						}
 					}
 				}
-				//N1<0
-				else
+				return s;
+			}
+
+			public: string CezarRight(string s, int N1)
+			{
+				int n = s.length();
+
+				Debug::WriteLine(N1);
+				Debug::WriteLine(N1 % 26);
+				Debug::WriteLine(sizeof(s[0]));
+				for (int i = 0; i < n; i++)
 				{
 					if (s[i] >= 'a' && s[i] <= 'z')
 					{
+						Debug::Write(s[i]);
+						Debug::Write("_");
 						s[i] = s[i] - N1 % 26;
+						
+						Debug::WriteLine(s[i]);
 						if (s[i] > 'z')
 						{
-							s[i] = 'a' - ('z' - s[i]) - 1;
+							s[i] = (int)'a' - ((int)'z' - (int)s[i]) - 1;
+						}
+						if (s[i] < 0) {
+							s[i] = 128 + s[i];
 						}
 					}
 					if (s[i] >= 'A' && s[i] <= 'Z')
@@ -111,12 +135,13 @@ namespace CppWinForm1 {
 						{
 							s[i] = 'A' - ('Z' - s[i]) - 1;
 						}
+						if (s[i] < 0) {
+							s[i] = 128 + s[i];
+						}
 					}
 				}
+				return s;
 			}
-
-			return s;
-		}
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -166,7 +191,7 @@ namespace CppWinForm1 {
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(36, 13);
 			this->label1->TabIndex = 5;
-			this->label1->Text = L"Шифр";
+			this->label1->Text = L"ГГЁГґГ°";
 			// 
 			// label2
 			// 
@@ -176,7 +201,7 @@ namespace CppWinForm1 {
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(37, 13);
 			this->label2->TabIndex = 6;
-			this->label2->Text = L"Сдвиг";
+			this->label2->Text = L"Г‘Г¤ГўГЁГЈ";
 			// 
 			// label3
 			// 
@@ -186,7 +211,7 @@ namespace CppWinForm1 {
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(134, 13);
 			this->label3->TabIndex = 7;
-			this->label3->Text = L"Расшифрованная строка";
+			this->label3->Text = L"ГђГ Г±ГёГЁГґГ°Г®ГўГ Г­Г­Г Гї Г±ГІГ°Г®ГЄГ ";
 			// 
 			// button2
 			// 
@@ -196,7 +221,7 @@ namespace CppWinForm1 {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(76, 25);
 			this->button2->TabIndex = 8;
-			this->button2->Text = L"Влево";
+			this->button2->Text = L"Г‚Г«ГҐГўГ®";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click_1);
 			// 
@@ -208,7 +233,7 @@ namespace CppWinForm1 {
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(76, 25);
 			this->button3->TabIndex = 9;
-			this->button3->Text = L"Вправо";
+			this->button3->Text = L"Г‚ГЇГ°Г ГўГ®";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
@@ -229,7 +254,7 @@ namespace CppWinForm1 {
 			this->Controls->Add(this->textBox1);
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Шифр Цезаря";
+			this->Text = L"ГГЁГґГ° Г–ГҐГ§Г Г°Гї";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -244,14 +269,14 @@ namespace CppWinForm1 {
 	}
 
 	private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
-		//сдвиг влево
+		//Г±Г¤ГўГЁГЈ ГўГ«ГҐГўГ®
 		N1 = N;
 		string st;
 		st = Cezar();
 		textBox3->Text = gcnew System::String(st.c_str());
 	}
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		//сдвиг вправо
+		//Г±Г¤ГўГЁГЈ ГўГЇГ°Г ГўГ®
 		N1 = N*(-1);
 		string st;
 		st = Cezar();
