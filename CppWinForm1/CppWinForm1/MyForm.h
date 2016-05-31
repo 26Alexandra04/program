@@ -9,6 +9,7 @@ namespace CppWinForm1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics;
 	using namespace System::Runtime::InteropServices;
 	using namespace std;
 
@@ -67,7 +68,7 @@ namespace CppWinForm1 {
 			char ch[100];
 			int i, n, N2;
 					
-			
+			n = str->Length;
 			if (N1 >= 0)
 			{
 				s = CezarLeft(s, N1);
@@ -79,69 +80,62 @@ namespace CppWinForm1 {
 			return s;
 		}
 
-			public: string CezarLeft(string s, int N1)
+		public: string CezarLeft(string s, int N1)
+		{
+			int n = s.length();
+			for (int i = 0; i < n; i++)
 			{
-				int n = s.length();
-				for (int i = 0; i < n; i++)
+				if (s[i] >= 'a' && s[i] <= 'z')
 				{
-					if (s[i] >= 'a' && s[i] <= 'z')
+					s[i] = s[i] - N1 % 26;
+					if (s[i] < 'a')
 					{
-						s[i] = s[i] - N1 % 26;
-						if (s[i] < 'a')
-						{
-							s[i] = 'z' - ('a' - s[i]) + 1;
-						}
-					}
-					if (s[i] >= 'A' && s[i] <= 'Z')
-					{
-						s[i] = s[i] - N1 % 26;
-						if (s[i] < 'A')
-						{
-							s[i] = 'Z' - ('A' - s[i]) + 1;
-						}
+						s[i] = 'z' - ('a' - s[i]) + 1;
 					}
 				}
-				return s;
-			}
-
-			public: string CezarRight(string s, int N1)
-			{
-				int n = s.length();
-
-				Debug::WriteLine(N1);
-				Debug::WriteLine(N1 % 26);
-				Debug::WriteLine(sizeof(s[0]));
-				for (int i = 0; i < n; i++)
+				if (s[i] >= 'A' && s[i] <= 'Z')
 				{
-					if (s[i] >= 'a' && s[i] <= 'z')
+					s[i] = s[i] - N1 % 26;
+					if (s[i] < 'A')
 					{
-						Debug::Write(s[i]);
-						Debug::Write("_");
-						s[i] = s[i] - N1 % 26;
-						
-						Debug::WriteLine(s[i]);
-						if (s[i] > 'z')
-						{
-							s[i] = (int)'a' - ((int)'z' - (int)s[i]) - 1;
-						}
-						if (s[i] < 0) {
-							s[i] = 128 + s[i];
-						}
-					}
-					if (s[i] >= 'A' && s[i] <= 'Z')
-					{
-						s[i] = s[i] - N1 % 26;
-						if (s[i] > 'Z')
-						{
-							s[i] = 'A' - ('Z' - s[i]) - 1;
-						}
-						if (s[i] < 0) {
-							s[i] = 128 + s[i];
-						}
+						s[i] = 'Z' - ('A' - s[i]) + 1;
 					}
 				}
-				return s;
 			}
+			return s;
+		}
+
+		public: string CezarRight(string s, int N1)
+		{
+			char *c = new char[s.length() + 1];
+			strcpy(c, s.c_str());
+			
+			int n = s.length();
+			for (int i = 0; i < n; i++)
+			{
+				int ci = static_cast<int>(c[i]); //Перевод каждого символа строки в int
+				if (ci >= 'a' && ci <= 'z')
+				{
+					ci = ci - N1 % 26;
+					if (ci > 'z')
+					{
+						ci = 'a' - ('z' - ci) - 1;
+					}
+				}
+				if (ci >= 'A' && ci <= 'Z')
+				{
+					ci = ci - N1 % 26;
+					if (ci > 'Z')
+					{
+						ci = 'A' - ('Z' - ci) - 1;
+					}
+				}
+				c[i] = ci;
+			}
+			std::string s1(c); //перевод строки из типа int в тип string
+
+			return s1;
+		}
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -189,9 +183,9 @@ namespace CppWinForm1 {
 			this->label1->ForeColor = System::Drawing::SystemColors::Control;
 			this->label1->Location = System::Drawing::Point(19, 23);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(36, 13);
+			this->label1->Size = System::Drawing::Size(31, 13);
 			this->label1->TabIndex = 5;
-			this->label1->Text = L"Øèôð";
+			this->label1->Text = L"Input";
 			// 
 			// label2
 			// 
@@ -199,9 +193,9 @@ namespace CppWinForm1 {
 			this->label2->ForeColor = System::Drawing::SystemColors::Control;
 			this->label2->Location = System::Drawing::Point(19, 74);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(37, 13);
+			this->label2->Size = System::Drawing::Size(40, 13);
 			this->label2->TabIndex = 6;
-			this->label2->Text = L"Ñäâèã";
+			this->label2->Text = L"Ceasar";
 			// 
 			// label3
 			// 
@@ -209,9 +203,9 @@ namespace CppWinForm1 {
 			this->label3->ForeColor = System::Drawing::SystemColors::Control;
 			this->label3->Location = System::Drawing::Point(19, 135);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(134, 13);
+			this->label3->Size = System::Drawing::Size(39, 13);
 			this->label3->TabIndex = 7;
-			this->label3->Text = L"Ðàñøèôðîâàííàÿ ñòðîêà";
+			this->label3->Text = L"Output";
 			// 
 			// button2
 			// 
@@ -221,7 +215,7 @@ namespace CppWinForm1 {
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(76, 25);
 			this->button2->TabIndex = 8;
-			this->button2->Text = L"Âëåâî";
+			this->button2->Text = L"Left";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click_1);
 			// 
@@ -233,7 +227,7 @@ namespace CppWinForm1 {
 			this->button3->Name = L"button3";
 			this->button3->Size = System::Drawing::Size(76, 25);
 			this->button3->TabIndex = 9;
-			this->button3->Text = L"Âïðàâî";
+			this->button3->Text = L"Right";
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
 			// 
@@ -254,7 +248,7 @@ namespace CppWinForm1 {
 			this->Controls->Add(this->textBox1);
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Øèôð Öåçàðÿ";
+			this->Text = L"Ceasar";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -269,14 +263,14 @@ namespace CppWinForm1 {
 	}
 
 	private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
-		//ñäâèã âëåâî
+		//Left
 		N1 = N;
 		string st;
 		st = Cezar();
 		textBox3->Text = gcnew System::String(st.c_str());
 	}
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-		//ñäâèã âïðàâî
+		//Right
 		N1 = N*(-1);
 		string st;
 		st = Cezar();
