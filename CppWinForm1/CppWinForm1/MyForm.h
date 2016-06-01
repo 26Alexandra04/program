@@ -9,7 +9,7 @@ namespace CppWinForm1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	using namespace System::Diagnostics;
+	//using namespace System::Diagnostics;
 	using namespace System::Runtime::InteropServices;
 	using namespace std;
 
@@ -65,16 +65,13 @@ namespace CppWinForm1 {
 	public: string Cezar()
 		{
 			string s = msclr::interop::marshal_as<std::string>(textBox1->Text); //перевод введенной строки из типа String^ (system) в тип string (std)
-			char ch[100];
-			int i, n, N2;
 					
-			n = str->Length;
 			if (N1 >= 0)
 			{
 				s = CezarLeft(s, N1);
 			}
 			else {
-				s= CezarRight(s, N1);
+				s = CezarRight(s, N1);
 			}
 
 			return s;
@@ -107,10 +104,10 @@ namespace CppWinForm1 {
 
 		public: string CezarRight(string s, int N1)
 		{
-			char *c = new char[s.length() + 1];
-			strcpy(c, s.c_str());
+			char *c = new char[s.length() + 1]; //Массив типа char
+			strcpy(c, s.c_str()); //КОпирование строки типа string в массив типа char
 			
-			int n = s.length();
+			int n = s.length(); //Длина строки
 			for (int i = 0; i < n; i++)
 			{
 				int ci = static_cast<int>(c[i]); //Перевод каждого символа строки в int
